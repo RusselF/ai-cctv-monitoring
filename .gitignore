@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Data & model (jangan di-commit, simpan struktur foldernya saja)
+data/raw/*
+data/samples/*
+data/outputs/annotated/*
+data/outputs/events/*
+models/pretrained/*
+!**/.gitkeep
+
+# Keluaran per kamera, bobot model, dan video
+data/outputs/*
+!data/outputs/.gitkeep
+*.pt
+*.mp4
+runs/
+
+
+# Env
+.env
+.vscode/
+.idea/

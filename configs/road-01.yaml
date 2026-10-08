@@ -1,0 +1,32 @@
+source:
+  type: video_file
+  path: data/raw/road-01/clip.mp4
+  frame_stride: 2
+
+model:
+  weights: models/pretrained/yolo11m.pt
+  conf: 0.25
+  imgsz: 960
+  device: null
+  classes: [car, motorcycle, bus, truck]
+
+preprocess:
+  max_side: 1280
+
+tracking:
+  enabled: true
+  tracker: bytetrack.yaml
+
+zones:
+  file: configs/road-01-zones.yaml
+  anchor: bottom_center
+
+events:
+  min_confidence: 0.35
+  enter_frames: 5
+  exit_grace: 5
+
+output:
+  dir: data/outputs/road-01
+  save_annotated: false                      # tidak perlu ratusan jpg lagi
+  save_video: true

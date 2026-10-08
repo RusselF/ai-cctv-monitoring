@@ -1,0 +1,24 @@
+# Sumber input: image_folder | video_file | rtsp
+source:
+  type: image_folder
+  path: data/samples/cctv-10        # khusus video/rtsp: ambil tiap N frame
+
+model:
+  weights: models/pretrained/yolo11n.pt   # diunduh otomatis oleh Ultralytics jika belum ada
+  conf: 0.25
+  imgsz: 960
+  device: null           # null = otomatis, atau "cpu" / "0"
+  classes: [person, car, motorcycle, bus, truck]
+
+preprocess:
+  max_side: 1280         # perkecil jika sisi terpanjang melebihi nilai ini (null = nonaktif)
+
+tracking:
+  enabled: false         # aktifkan hanya untuk video / sequence frame
+  tracker: bytetrack.yaml
+
+zones:
+  file: configs/cctv-10-zones.yaml  # bottom_center | center
+
+output:
+  dir: data/outputs/cctv-10

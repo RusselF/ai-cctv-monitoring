@@ -1,0 +1,6 @@
+zones:
+  - name: road_zone
+    coords: normalized
+    classes: [car, truck, bus, motorcycle]
+    min_confidence: 0.4
+    points: [[0.146, 0.306], [0.38, 0.135], [0.609, 0.185], [0.522, 0.58]]
