@@ -54,7 +54,16 @@ def run(cfg: dict, limit: int | None = None) -> dict:
         enter_frames=ev.get("enter_frames", 1),
         exit_grace=ev.get("exit_grace", 0),
     )
-    writer = EventWriter(out_dir / "events" / "events.jsonl")
+    writers = [EventWriter(out_dir / "events" / "events.jsonl")]
+    if cfg.get("database"):
+        from pipeline.batch05_event.db_writer import DatabaseEventWriter  # butuh sqlalchemy
+
+        db = cfg["database"]
+        camera_name = cfg.get("camera", {}).get("name") or out_dir.name
+        writers.append(
+            DatabaseEventWriter(db.get("url"), camera_name, zones, source_type=cfg["source"]["type"])
+        )
+        log.info("event juga disimpan ke database (kamera=%s)", camera_name)
 
     out_cfg = cfg["output"]
     save_jpg = out_cfg.get("save_annotated", True)
@@ -70,7 +79,8 @@ def run(cfg: dict, limit: int | None = None) -> dict:
             detections = tracker.process(frame.image, frame.frame_id)
             matches = assign_zones(detections, zones, (w, h), anchor)
             events = generator.process(frame, matches)
-            writer.write(events)
+            for sink in writers:
+                sink.write(events)
 
             if save_jpg or save_video:
                 annotated = draw(frame.image, detections, zones, matches)

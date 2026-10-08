@@ -9,6 +9,12 @@ model:
   imgsz: 960
   device: null
   classes: [car, motorcycle, bus, truck]
+  
+camera:
+  name: road-01
+
+database:
+  url: sqlite:///data/monitoring.db
 
 preprocess:
   max_side: 1280
