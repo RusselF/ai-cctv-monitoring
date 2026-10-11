@@ -22,6 +22,8 @@ runs/
 
 *.db
 
+configs/*.local.yaml
+
 # Env
 .env
 .vscode/

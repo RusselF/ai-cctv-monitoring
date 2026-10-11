@@ -74,6 +74,7 @@ def insert_events(
             frame_id=e.frame_id,
             track_id=e.track_id,
             count=e.count,
+            video_time=e.video_time,
         )
         for e in events
     )
@@ -125,6 +126,7 @@ def list_events(session: Session, flt: EventFilter, limit: int = 100, offset: in
             "id": e.id, "camera": camera, "zone": zone, "run_id": e.run_id,
             "event_type": e.event_type, "class_name": e.class_name, "confidence": e.confidence,
             "timestamp": as_utc(e.timestamp), "frame_id": e.frame_id, "track_id": e.track_id, "count": e.count,
+            "video_time": e.video_time,
         }
         for e, camera, zone in session.execute(stmt)
     ]

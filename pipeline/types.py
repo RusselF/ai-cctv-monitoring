@@ -13,6 +13,7 @@ class Frame:
     image: np.ndarray
     source_name: str
     label: str = ""  # dipakai untuk nama file output
+    video_time: float | None = None  # detik sejak awal video (None untuk gambar/stream)
     timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
@@ -41,6 +42,7 @@ class Event:
     frame_id: int
     track_id: int | None = None
     count: int | None = None  # dipakai event congestion
+    video_time: float | None = None  # detik di dalam video
 
     def to_dict(self) -> dict:
         return asdict(self)

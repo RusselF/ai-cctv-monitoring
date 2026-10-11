@@ -52,6 +52,7 @@ class EventGenerator:
             source=frame.source_name,
             frame_id=frame.frame_id,
             track_id=det.track_id,
+            video_time=frame.video_time,
         )
 
     def _zone_event(self, kind: str, zone: Zone, count: int, conf: float, frame: Frame) -> Event:
@@ -64,6 +65,7 @@ class EventGenerator:
             source=frame.source_name,
             frame_id=frame.frame_id,
             count=count,
+            video_time=frame.video_time,
         )
 
     def process(self, frame: Frame, matches: list[tuple[Detection, Zone]]) -> list[Event]:

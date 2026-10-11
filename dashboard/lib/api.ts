@@ -24,6 +24,7 @@ export type EventItem = {
   frame_id: number;
   track_id: number | null;
   count: number | null;
+  video_time: number | null;
 };
 
 export type EventPage = { total: number; limit: number; offset: number; items: EventItem[] };

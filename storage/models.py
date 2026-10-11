@@ -49,3 +49,4 @@ class Event(Base):
     frame_id: Mapped[int] = mapped_column(Integer)
     track_id: Mapped[int | None] = mapped_column(Integer, nullable=True)
     count: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    video_time: Mapped[float | None] = mapped_column(Float, nullable=True)  # detik di dalam video

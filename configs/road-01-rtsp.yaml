@@ -1,0 +1,40 @@
+camera:
+  name: road-01-rtsp
+
+database:
+  url: sqlite:///data/monitoring.db
+
+source:
+  type: rtsp
+  path: rtsp://127.0.0.1:8554/road01
+  reconnect_delay: 2
+  max_retries: 5
+
+model:
+  weights: models/pretrained/yolo11n.pt
+  conf: 0.25
+  imgsz: 640
+  device: null
+  classes: [car, motorcycle, bus, truck]
+
+preprocess:
+  max_side: 1280
+
+tracking:
+  enabled: true
+  tracker: bytetrack.yaml
+
+zones:
+  file: configs/road-01-zones.yaml
+  anchor: bottom_center
+
+events:
+  min_confidence: 0.35
+  enter_frames: 2
+  exit_grace: 3
+
+output:
+  dir: data/outputs/road-01-rtsp
+  save_annotated: false
+  save_video: true
+  video_fps: 5

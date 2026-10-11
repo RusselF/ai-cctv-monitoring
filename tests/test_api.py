@@ -14,7 +14,7 @@ ZONES = [Zone("road_zone", SQUARE, classes=frozenset({"car"}), min_confidence=0.
 
 def ev(kind, cls, frame, zone="road_zone", track=1, count=None, second=0):
     ts = datetime(2026, 10, 7, 10, 0, second, tzinfo=timezone.utc).isoformat()
-    return Event(kind, cls, zone, 0.9, ts, "clip", frame, track, count)
+    return Event(kind, cls, zone, 0.9, ts, "clip", frame, track, count, video_time=frame / 30)
 
 
 @pytest.fixture()
@@ -97,3 +97,7 @@ def test_timestamps_carry_utc_offset(client):
     assert ts.endswith("Z") or ts.endswith("+00:00")
     run = client.get("/runs").json()[0]
     assert run["first_event"].endswith(("Z", "+00:00")) and run["last_event"].endswith(("Z", "+00:00"))
+
+def test_events_include_video_time(client):
+    first = client.get("/events").json()["items"][0]            # frame 4
+    assert first["video_time"] == pytest.approx(4 / 30)

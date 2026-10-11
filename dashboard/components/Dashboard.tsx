@@ -10,6 +10,14 @@ function formatTime(iso: string): string {
   return new Date(iso).toLocaleString("id-ID", { timeZone: "Asia/Jakarta", hour12: false });
 }
 
+function formatVideoTime(seconds: number | null): string {
+  if (seconds === null) return "-";
+  const minutes = Math.floor(seconds / 60);
+  const rest = (seconds - minutes * 60).toFixed(1).padStart(4, "0");
+  return `${String(minutes).padStart(2, "0")}:${rest}`;
+}
+
+
 export default function Dashboard() {
   const [cameras, setCameras] = useState<Camera[]>([]);
   const [runs, setRuns] = useState<Run[]>([]);
@@ -217,7 +225,8 @@ export default function Dashboard() {
             <table>
               <thead>
                 <tr>
-                  <th>Waktu (WIB)</th>
+                  <th>Waktu video</th>
+                  <th>Diproses (WIB)</th>
                   <th>Event</th>
                   <th>Kelas</th>
                   <th>Zona</th>
@@ -230,6 +239,7 @@ export default function Dashboard() {
               <tbody>
                 {page?.items.map((e) => (
                   <tr key={e.id}>
+                    <td>{formatVideoTime(e.video_time)}</td>
                     <td>{formatTime(e.timestamp)}</td>
                     <td>
                       <span className={`badge ${e.event_type}`}>{e.event_type}</span>
@@ -244,7 +254,7 @@ export default function Dashboard() {
                 ))}
                 {page && page.items.length === 0 && (
                   <tr>
-                    <td colSpan={8} className="muted">
+                    <td colSpan={9} className="muted">
                       Tidak ada event untuk filter ini.
                     </td>
                   </tr>

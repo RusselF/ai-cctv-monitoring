@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import argparse
 import logging
+import time
 from pathlib import Path
 
 import cv2
@@ -71,6 +72,7 @@ def run(cfg: dict, limit: int | None = None) -> dict:
     video = None
 
     n_frames = n_events = 0
+    started = time.perf_counter()
     try:
         for frame in source:
             frame.image = preprocess(frame.image, cfg.get("preprocess", {}).get("max_side"))
@@ -100,7 +102,13 @@ def run(cfg: dict, limit: int | None = None) -> dict:
         if video is not None:
             video.release()
 
-    summary = {"frames": n_frames, "events": n_events}
+    elapsed = time.perf_counter() - started
+    summary = {
+        "frames": n_frames,
+        "events": n_events,
+        "seconds": round(elapsed, 1),
+        "fps": round(n_frames / elapsed, 2) if elapsed > 0 else 0.0,
+    }
     if tracked:
         summary["unique_objects"] = tracker.history.unique_counts()
     log.info("selesai: %s", summary)

@@ -144,3 +144,9 @@ def test_enter_frames_requires_consecutive_presence():
     steady = [True, True, True, True]
     kinds = [e.event_type for i, p in enumerate(steady) for e in gen2.process(frame(i), _tracked(d, p))]
     assert kinds == ["zone_enter"]
+
+def test_event_carries_video_time_from_frame():
+    gen = EventGenerator()
+    f = Frame(7, IMG, "clip", label="clip_000007", video_time=0.233)
+    events = gen.process(f, [(Detection("car", 0.9, (0, 0, 1, 1)), ZONE)])
+    assert events[0].video_time == 0.233

@@ -36,6 +36,7 @@ class EventOut(BaseModel):
     frame_id: int
     track_id: int | None
     count: int | None
+    video_time: float | None = None
 
 
 class EventPage(BaseModel):
